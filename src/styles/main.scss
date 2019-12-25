@@ -1,3 +1,64 @@
-body {
-  margin: 0;
+* {
+  box-sizing: border-box;
+}
+
+@mixin calendar {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 710px;
+}
+
+@mixin block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  width: 100px;
+  height: 100px;
+
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+
+  background-color: #eee;
+
+  margin: 0 1px 1px 0;
+
+  border: 1px solid #000;
+}
+
+.calendar {
+  @include calendar;
+
+  div {
+    display: none;
+  }
+
+  $lengthMonth: 28, 29, 30, 31;
+  @each $lastNumberOfMonth in $lengthMonth {
+    &-#{$lastNumberOfMonth} div:nth-child(-n + #{$lastNumberOfMonth}) {
+      @include block;
+    }
+  }
+
+  @for $i from 1 through 31 {
+    & div:nth-child(#{$i})::after {
+      content: "#{$i}";
+    }
+  }
+
+  $weakDays: "mon" 0, "tue" 101, "wed" 202, "thu" 303, "fri" 404, "sat" 505,
+    "sun" 606;
+
+  @each $day, $margin in $weakDays {
+    &-#{$day} div:first-child {
+      margin-left: #{$margin}px;
+    }
+  }
+
+  div:hover {
+    bottom: 20px;
+    background-color: #ffbfcb;
+  }
 }
