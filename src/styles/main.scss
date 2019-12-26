@@ -1,31 +1,7 @@
+@import "mixins";
+
 * {
   box-sizing: border-box;
-}
-
-@mixin calendar {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 710px;
-}
-
-@mixin block {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: relative;
-
-  width: 100px;
-  height: 100px;
-
-  font-family: Arial, sans-serif;
-  font-size: 30px;
-
-  background-color: #eee;
-
-  margin: 0 1px 1px 0;
-
-  border: 1px solid #000;
 }
 
 .calendar {
@@ -36,8 +12,13 @@
   }
 
   $lengthMonth: 28, 29, 30, 31;
-  @each $lastNumberOfMonth in $lengthMonth {
-    &-#{$lastNumberOfMonth} div:nth-child(-n + #{$lastNumberOfMonth}) {
+  // @each $lastNumberOfMonth in $lengthMonth {
+  //   &-#{$lastNumberOfMonth} div:nth-child(-n + #{$lastNumberOfMonth}) {
+  //     @include block;
+  //   }
+  // }
+  @for $i from 1 through 4 {
+    &-#{nth($lengthMonth, $i)} div:nth-child(-n + #{nth($lengthMonth, $i)}) {
       @include block;
     }
   }
@@ -48,17 +29,18 @@
     }
   }
 
-  $weakDays: "mon" 0, "tue" 101, "wed" 202, "thu" 303, "fri" 404, "sat" 505,
-    "sun" 606;
+  $weakDays: "mon" 0, "tue" 1, "wed" 2, "thu" 3, "fri" 4, "sat" 5, "sun" 6;
 
   @each $day, $margin in $weakDays {
     &-#{$day} div:first-child {
-      margin-left: #{$margin}px;
+      margin-left: #{$margin * 100 + $margin}px;
     }
   }
 
   div:hover {
     bottom: 20px;
     background-color: #ffbfcb;
+
+    transition: bottom 0.5s ease-in-out;//не могу понять че не работает анимация
   }
 }
